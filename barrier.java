@@ -4,12 +4,15 @@ class semBarrier extends Barrier {
     private Semaphore sem; 
     
     semBarrier(int n) {
-        sem = new Semaphore(-1 * (n-1));
+        sem = new Semaphore(n-1);
     }
 
     public void arriveAndWait() {
-        sem.release();
-        sem.acquire();
+        if (sem.tryAcquire()) {
+            wait();
+            sem.release()
+        }
+        else notifyAll();
     }
 }
 
