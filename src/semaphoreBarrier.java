@@ -3,6 +3,7 @@ import java.util.concurrent.*;
 public class semaphoreBarrier implements Barrier
 {
     private Semaphore sem; 
+    private final Object lock = new Object();
 
 	public semaphoreBarrier(int N)
 	{
@@ -10,10 +11,19 @@ public class semaphoreBarrier implements Barrier
 	}
 	public void arriveAndWait()
 	{
-	    if (sem.tryAcquire()) {
-            wait();
-            sem.release()
-        }   
-        else notifyAll();	
+	    synchronized(lock) { 
+            if (sem.tryAcquire()) {
+                try{
+                    lock.wait();
+                }
+                catch(InterruptedException e){
+                    System.out.println("wait interrupted!");
+                }
+                sem.release();
+            }   
+            else {
+                lock.notifyAll();
+            }
+        }
 	}
 }
