@@ -1,4 +1,4 @@
 interface Barrier
 {
-	public void arriveAndWait();
+    public void arriveAndWait();
 }
