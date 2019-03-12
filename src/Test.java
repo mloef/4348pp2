@@ -65,10 +65,12 @@ public class Test
 			if(solutionVector.toString().equals(inputVector.toString()))
 			{
 				System.out.println("Iteration #" + iteration + ": " + barrier_type + " passed test");
+                System.out.flush()
 			}
 			else
 			{
 				System.out.println("Iteration #" + iteration + ": " + barrier_type + " failed test");
+                System.out.flush()
 			}
 		}
 	}
