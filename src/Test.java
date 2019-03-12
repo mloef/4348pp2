@@ -18,7 +18,7 @@ public class Test
 			t.setName(Integer.toString(i));//Thread name based on its -based index
 			t.start();
 			threads.add(t);
-		}
+        }
 		for(int i = 0; i < N; i++)
 		{
 			try
@@ -55,7 +55,7 @@ public class Test
 			{
 				barrier_type = "Monitor Barrier";
 				threadedNormalize(mb, inputVector);
-			}
+            }
 			else
 			{
 				barrier_type = "Semaphore Barrier";
@@ -65,12 +65,12 @@ public class Test
 			if(solutionVector.toString().equals(inputVector.toString()))
 			{
 				System.out.println("Iteration #" + iteration + ": " + barrier_type + " passed test");
-                System.out.flush()
+                System.out.flush();
 			}
 			else
 			{
 				System.out.println("Iteration #" + iteration + ": " + barrier_type + " failed test");
-                System.out.flush()
+                System.out.flush();
 			}
 		}
 	}
