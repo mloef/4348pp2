@@ -27,9 +27,11 @@ public class semaphoreBarrier implements Barrier
         
         int t = index;
         index += 1;
-        atomInt.release();
         
         if (t < n-1) { 
+            atomInt.release();
+            System.out.println("Thread " + t + " in wait");
+            System.out.flush();
             try{sems[t].acquire();}
             catch(InterruptedException e){
                 System.out.println("wait interrupted!");
@@ -41,6 +43,9 @@ public class semaphoreBarrier implements Barrier
                 sems[i].release();
             }
             index = 0; 
+            atomInt.release();
+            System.out.println("Thread " + t + " in release");
+            System.out.flush();
         }
     }
 }
