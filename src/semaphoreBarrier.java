@@ -26,6 +26,8 @@ public class semaphoreBarrier implements Barrier
         }
         
         int t = index;
+        System.out.println("Thread " + t + " entering");
+        System.out.flush();
         index += 1;
         
         if (t < n-1) { 
