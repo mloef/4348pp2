@@ -1,20 +1,15 @@
 import java.util.concurrent.*;
+import java.util.Stack;
 
 public class semaphoreBarrier implements Barrier
 {
-    private Semaphore[] sems;
+    private Stack<Semaphore> sems = new Stack<Semaphore>();
     private Semaphore atomInt;
     int n; 
-    int index; 
 
     public semaphoreBarrier(int N)
     {   
-        sems = new Semaphore[N-1];
-        for (int i = 0; i < N-1; ++i) {
-            sems[i] = new Semaphore(0);
-        }
         atomInt = new Semaphore(1);
-        index = 0;
         n = N; 
     }   
 
@@ -25,30 +20,28 @@ public class semaphoreBarrier implements Barrier
             System.out.println("wait interrupted!");
         }
         
-        int t = index;
+        int t = sems.size();
         System.out.println("Thread " + t + " entering");
         System.out.flush();
-        index += 1;
         
         if (t < n-1) { 
+            sems.push(new Semaphore(0)); 
             atomInt.release();
             System.out.println("Thread " + t + " in wait");
             System.out.flush();
-            try{sems[t].acquire();}
+            try{sems.peek().acquire();}
             catch(InterruptedException e){
                 System.out.println("wait interrupted!");
             }
-            System.out.println("Thread " + t + " released");
-            System.out.flush();
         } 
         
         else {
-            for (int i = 0; i < n-1; ++i) {
-                sems[i].release();
+            while (sems.size() != 0) {
+                sems.peek().release();
+                sems.pop();
             }
-            index = 0; 
             atomInt.release();
-            System.out.println("Thread " + t + " in releasing");
+            System.out.println("Thread " + t + " in release");
             System.out.flush();
         }
     }
